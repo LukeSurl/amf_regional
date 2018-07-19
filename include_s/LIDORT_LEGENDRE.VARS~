@@ -1,0 +1,72 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  file of Legendre polynomials and associated quantities
+
+C  1. Legendre functions on the Quadrature Angles, and at Beam angle X0
+C     -----------------------------------------------------------------
+
+C  Normalized Legendre polynomials
+C      With factor { (L-M)! / (L+M)! } ^ 0.5
+
+	DOUBLE PRECISION
+     &         LEG_P(MAXSTRM,0:MAXMOMENT), LEG_M(MAXSTRM,0:MAXMOMENT),
+     &         LEG0_P(0:MAXMOMENT),        LEG0_M(0:MAXMOMENT,MAXLAYER)
+
+C  Polynomial prodcuts                            
+                                                    
+	DOUBLE PRECISION
+     &         PLMI_PLMJ_P(MAXSTRM,MAXSTRM,0:MAXMOMENT),
+     &         PLMI_PLMJ_M(MAXSTRM,MAXSTRM,0:MAXMOMENT),
+     &         PLMI_X0_P(MAXSTRM,0:MAXMOMENT,MAXLAYER),
+     &         PLMI_X0_M(MAXSTRM,0:MAXMOMENT,MAXLAYER)
+
+C  Polynomial-weight products
+
+	DOUBLE PRECISION
+     &         WT_LEGP(MAXSTRM,0:MAXMOMENT),
+     &         WT_LEGM(MAXSTRM,0:MAXMOMENT)
+
+C  2. Legendre functions on Used-defined zenith Angles
+C     ------------------------------------------------
+
+C  Normalized Legendre polynomials
+
+	DOUBLE PRECISION
+     &         U_LEG_P(MAX_USER_STREAMS,0:MAXMOMENT),
+     &         U_LEG_M(MAX_USER_STREAMS,0:MAXMOMENT)
+
+C  3. Commons storage
+C     ---------------
+
+	COMMON / LEGENDRE_SETUP_1 /
+     &       PLMI_PLMJ_P, PLMI_PLMJ_M, PLMI_X0_P, PLMI_X0_M,
+     &       LEG_P, LEG_M, LEG0_P, LEG0_M, WT_LEGP, WT_LEGM
+
+	COMMON / LEGENDRE_SETUP_2 /
+     &       U_LEG_P, U_LEG_M
+
+	SAVE   / LEGENDRE_SETUP_1 /
+	SAVE   / LEGENDRE_SETUP_2 /

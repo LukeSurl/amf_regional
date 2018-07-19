@@ -1,0 +1,71 @@
+C********************************************************************C
+C
+C	GOMETRAN++ - Version 2.1 - Last modification: 3 Apr 1996
+C
+C	Copyright (C) 1995-1996, Institute of Remote Sensing,
+C			         University of Bremen, Germany
+C
+C********************************************************************C
+C  GT_SPECIES.PARS  -  SPECIES INDEXING for RADIATIVE TRANSFER
+
+C  Indices for individual molecular species.
+
+        INTEGER         GT_H2O_IDX
+        PARAMETER       ( GT_H2O_IDX = 1 )
+
+        INTEGER         GT_O2_IDX
+        PARAMETER       ( GT_O2_IDX = 2 )
+
+        INTEGER         GT_O3_IDX
+        PARAMETER       ( GT_O3_IDX = 3 )
+
+        INTEGER         GT_NO2_IDX
+        PARAMETER       ( GT_NO2_IDX = 4 )
+
+        INTEGER         GT_NO_IDX
+        PARAMETER       ( GT_NO_IDX = 5 )
+
+        INTEGER         GT_CLO_IDX
+        PARAMETER       ( GT_CLO_IDX = 6 )
+
+        INTEGER         GT_HCHO_IDX
+        PARAMETER       ( GT_HCHO_IDX = 7 )
+
+        INTEGER         GT_SO2_IDX
+        PARAMETER       ( GT_SO2_IDX = 8 )
+
+        INTEGER         GT_BRO_IDX
+        PARAMETER       ( GT_BRO_IDX = 9 )
+
+        INTEGER         GT_NO3_IDX
+        PARAMETER       ( GT_NO3_IDX = 10 )
+
+        INTEGER         GT_OCLO_IDX
+        PARAMETER       ( GT_OCLO_IDX = 11 )
+
+        INTEGER         GT_O4_IDX
+        PARAMETER       ( GT_O4_IDX = 12 )
+
+C  Maximum number of separate MOLECULES
+
+        INTEGER         MAX_GT_MOL_IDX
+        PARAMETER       ( MAX_GT_MOL_IDX = GT_O4_IDX )
+
+C  Particulates (indices for scattering, extinction and truncation)
+
+	INTEGER		GT_SCAT_IDX
+	PARAMETER	( GT_SCAT_IDX = 1 )
+
+	INTEGER		GT_EXTC_IDX
+	PARAMETER	( GT_EXTC_IDX = 2 )
+
+	INTEGER         GT_ASYM_IDX
+	PARAMETER       ( GT_ASYM_IDX = 3 )
+
+	INTEGER		GT_TRUNC_IDX
+	PARAMETER	( GT_TRUNC_IDX = 3 )
+C ******************************************************************
+
+
+
+

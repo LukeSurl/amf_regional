@@ -1,0 +1,227 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  File of input variables to LIDORT
+C  ---------------------------------
+
+C  Contains two types of variables
+C	1. Those read directly from file, or set by the user
+C	2. Those determined inside of LIDORT_MASTER.
+
+C  1. User/File-read inputs
+C     =====================
+
+C  (a) Stream/layer/moment (INTEGER input)
+C      -----------------------------------
+
+C  Number of half-space computational streams
+
+	INTEGER		 NSTREAMS
+
+C  number of Input Legendre moments
+
+	INTEGER		 NMOMENTS_INPUT
+
+C  number of layers
+
+	INTEGER		 NLAYERS
+
+C  (b) Flux/accuracy
+C      -------------
+
+C  Flux factor ( should be 1 or pi )
+
+	DOUBLE PRECISION FLUX_FACTOR
+
+C  accuracy for convergence of Fourier series
+
+	DOUBLE PRECISION LIDORT_ACCURACY
+
+C  Zenith tolerance (nearness of output zenith cosine to 1.0 )
+
+	DOUBLE PRECISION ZENITH_TOLERANCE
+
+C  (c)  Solar beam input
+C       ----------------
+
+C  Local input solar zenith angles by layer
+C  ( Only required for refractive geometry attenuation of the solar beam)
+
+	DOUBLE PRECISION SUNLOCAL_INPUT(MAXLAYER)
+
+C  TOA solar zenith angle
+
+	DOUBLE PRECISION SUN0
+
+C  Earth radius (in km) for Chapman function calculation of TAUTHICK_INPUT
+
+	DOUBLE PRECISION EARTH_RADIUS
+
+C  (d) User defined input
+C      ------------------
+
+C  User-defined zenith angle input 
+
+	INTEGER		 N_USER_STREAMS
+	DOUBLE PRECISION USER_ANGLES_INPUT(MAX_USER_STREAMS)
+
+C  user-defined relative azimuths (mandatory for Fourier > 0)
+
+	INTEGER		 N_USER_RELAZMS
+	DOUBLE PRECISION USER_RELAZMS(MAX_USER_RELAZMS)
+
+C  User-defined and layer-boundary optical depths
+C    (not used in Versions 1.0 and 1.1)
+
+	INTEGER		 N_OUT_USERTAUS
+	DOUBLE PRECISION USER_TAUS_INPUT(MAX_OUT_USERTAUS)
+	INTEGER		 LBOUND_TAUS_INPUT(MAX_OUT_USERTAUS)
+
+C  2. Derived Input (set inside LIDORT)
+C     =================================
+
+C  TOA solar zenith cosine
+
+	DOUBLE PRECISION X0
+
+C  Local input solar zenith angles Cosines
+C  ( Only required for refractive geometry attenuation of the solar beam)
+
+	DOUBLE PRECISION SUN_SZA_COSINES(MAXLAYER)
+
+C  Quadrature inputs
+
+	DOUBLE PRECISION X(MAXSTRM), A(MAXSTRM)
+	DOUBLE PRECISION HALFA(MAXSTRM), AX(MAXSTRM)
+	DOUBLE PRECISION XANG(MAXSTRM)
+
+C  Mode of operation
+
+	LOGICAL		 DO_MSMODE_LIDORT
+
+C  Actual number of moments used in calculations
+C   ( Normally 2 x NSTREAMS - 1 )
+
+	INTEGER		 NMOMENTS
+
+C  NSTR2 = 2*NSTREAMS
+C  total number of layers and streams NTOTAL = NSTR2 x NLAYERS
+C  Number of super and sub diagonals in Band Matrix storage
+
+	INTEGER		 NSTR2
+	INTEGER		 NTOTAL
+	INTEGER		 N_SUBDIAG, N_SUPDIAG
+
+C  number of convergence streams and tests
+
+	INTEGER		 N_CONVTESTS
+	INTEGER		 N_CONV_STREAMS
+
+C  Local start of user streams ( set in LIDORT_MASTER )
+
+	INTEGER		 LOCAL_UM_START
+
+C  ############ NEW CODE ##########
+C  Last layer to include Particular integral solution
+
+	INTEGER		 LAYER_PIS_CUTOFF
+C  ############ NEW CODE ##########
+
+C  Number of directions (1 or 2) and directional array
+
+	INTEGER		 N_DIRECTIONS
+	INTEGER		 WHICH_DIRECTIONS ( MAX_DIRECTIONS )
+
+C  Cosines of user-defined (off-quadrature) stream angles
+
+	DOUBLE PRECISION USER_STREAMS(MAX_USER_STREAMS)
+	DOUBLE PRECISION USER_SECANTS(MAX_USER_STREAMS)
+
+C  output angles and masks
+
+	INTEGER		 N_OUT_STREAMS
+	DOUBLE PRECISION OUT_ANGLES(MAX_OUT_STREAMS)
+	INTEGER		 QUADOUTPUT_INDEX(MAXSTRM)
+	INTEGER		 USEROUTPUT_INDEX(MAX_USER_STREAMS)
+
+C  output optical depth masks and indices
+
+	LOGICAL		 OFFGRID_UTAU_OUTFLAG(MAX_OUT_USERTAUS)
+	INTEGER		 OFFGRID_UTAU_OUTINDEX(MAX_OUT_USERTAUS)
+	INTEGER		 UTAU_LEVEL_MASK_UP(MAX_OUT_USERTAUS)
+	INTEGER		 UTAU_LEVEL_MASK_DN(MAX_OUT_USERTAUS)
+
+C  off-grid optical depths (values, masks, indices)
+
+	INTEGER		 N_OFFGRID_USERTAUS
+	INTEGER		 OFFGRID_UTAU_LAYERIDX(MAX_OFFGRID_USERTAUS)
+	DOUBLE PRECISION OFFGRID_UTAU_VALUES(MAX_OFFGRID_USERTAUS)
+
+C  number of whole layer source terms required, + overall layers required
+
+	INTEGER		 N_LAYERSOURCE_UP
+	INTEGER		 N_LAYERSOURCE_DN
+	INTEGER		 N_ALLLAYERS_UP
+	INTEGER		 N_ALLLAYERS_DN
+
+C  Layer masks for doing integrated source terms
+
+	LOGICAL		 STERM_LAYERMASK_UP(MAXLAYER)
+	LOGICAL		 STERM_LAYERMASK_DN(MAXLAYER)
+
+C  commons
+
+	COMMON / LIDORT_FILEREAD_INPUTS /
+     D       FLUX_FACTOR, LIDORT_ACCURACY, ZENITH_TOLERANCE,
+     D       SUN0, SUNLOCAL_INPUT, EARTH_RADIUS,
+     D       USER_ANGLES_INPUT, USER_RELAZMS, USER_TAUS_INPUT,
+     I       N_USER_STREAMS, N_USER_RELAZMS, N_OUT_USERTAUS,
+     I       NSTREAMS, NLAYERS, NMOMENTS_INPUT,
+     I       LBOUND_TAUS_INPUT
+
+	COMMON / LIDORT_DERIVED_INPUTS  /
+     D   X0, SUN_SZA_COSINES,
+     D   X, A, HALFA, AX, XANG, USER_STREAMS, USER_SECANTS, 
+     D   OUT_ANGLES, OFFGRID_UTAU_VALUES,
+     I   NMOMENTS, NSTR2, NTOTAL, N_SUBDIAG, N_SUPDIAG,
+     I   N_CONVTESTS, N_CONV_STREAMS, LOCAL_UM_START,
+     I   N_DIRECTIONS, WHICH_DIRECTIONS,
+     I   N_OUT_STREAMS, N_OFFGRID_USERTAUS,
+     I   N_LAYERSOURCE_UP, N_LAYERSOURCE_DN,
+     I   N_ALLLAYERS_UP, N_ALLLAYERS_DN, LAYER_PIS_CUTOFF,
+     I   OFFGRID_UTAU_OUTINDEX, OFFGRID_UTAU_LAYERIDX,
+     I   UTAU_LEVEL_MASK_UP, UTAU_LEVEL_MASK_DN,
+     I   USEROUTPUT_INDEX, QUADOUTPUT_INDEX,
+     L   DO_MSMODE_LIDORT, OFFGRID_UTAU_OUTFLAG,
+     L   STERM_LAYERMASK_UP, STERM_LAYERMASK_DN
+
+C  ### line replaced   #####
+C     I   N_ALLLAYERS_UP, N_ALLLAYERS_DN,
+C  #########################
+
+	SAVE   / LIDORT_FILEREAD_INPUTS /
+	SAVE   / LIDORT_DERIVED_INPUTS  /
+
+C  end of file.

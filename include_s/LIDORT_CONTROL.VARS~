@@ -1,0 +1,141 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  include file of control variables (standard)
+
+C  radiative transfer control
+C  --------------------------
+
+C  particular solution control
+
+	LOGICAL		 DO_DIRECT_BEAM
+	LOGICAL		 DO_CLASSICAL_SOLUTION
+
+C  Beam particular solution quasi-spheric control
+
+	LOGICAL		 DO_QUASPHER_BEAM
+	LOGICAL		 DO_QSREFRAC_BEAM
+	LOGICAL		 DO_CHAPMAN_FUNCTION
+
+C  scatterers and phase function control
+
+	LOGICAL		 DO_RAYLEIGH_ONLY
+	LOGICAL		 DO_ISOTROPIC_ONLY
+
+C  Surface control
+
+	LOGICAL		 DO_LAMBERTIAN_ALBEDO
+	LOGICAL		 DO_SURFACE_EMISSION
+
+C  numerical control
+  
+	LOGICAL		 DO_NO_AZIMUTH
+	LOGICAL		 DO_FULL_QUADRATURE
+	LOGICAL		 DO_ALL_FOURIER
+	LOGICAL		 DO_DELTAM_SCALING
+
+C  mean value control
+
+	LOGICAL		 DO_ADDITIONAL_MVOUT
+	LOGICAL		 DO_MVOUT_ONLY
+
+C  Multiple scatter source term control
+
+	LOGICAL		 SAVE_LAYER_MSST
+
+C  Mode of operation control
+
+	LOGICAL		 DO_FULLRAD_MODE
+	LOGICAL		 DO_SSCORRECTION
+
+C  double convergence test flag
+
+	LOGICAL		 DOUBLE_CONV_TEST
+
+C  debug output
+
+	LOGICAL		 DO_DEBUG_WRITE
+
+	LOGICAL		 DO_WRITE_INPUT
+	LOGICAL		 DO_WRITE_RESULTS
+	LOGICAL		 DO_WRITE_RESULTS_IDL
+	LOGICAL		 DO_WRITE_SCENARIO
+	LOGICAL		 DO_WRITE_FOURIER
+
+C  user-defined output control
+
+	LOGICAL		 DO_QUAD_OUTPUT
+	LOGICAL		 DO_USER_STREAMS
+	LOGICAL		 DO_USER_TAUS
+	LOGICAL		 DO_LBOUND_TAUS
+
+C  directional control
+
+	LOGICAL		 DO_UPWELLING
+	LOGICAL		 DO_DNWELLING
+
+C  filenames for output
+
+	CHARACTER*(60)	 IDLRESULTS_WRITE_FILENAME
+	CHARACTER*(60)	 RESULTS_WRITE_FILENAME
+	CHARACTER*(60)	 INPUT_WRITE_FILENAME
+	CHARACTER*(60)	 SCENARIO_WRITE_FILENAME
+	CHARACTER*(60)	 FOURIER_WRITE_FILENAME
+
+C  Error file and error initialization flag
+
+	CHARACTER*(60)	 LIDORT_ERROR_FILENAME
+	LOGICAL		 LIDORT_ERROR_INIT
+
+C  commons
+
+	COMMON / LIDORT_CONTROL_INPUTS /
+     L       DO_DIRECT_BEAM,          
+     L       DO_RAYLEIGH_ONLY,        DO_ISOTROPIC_ONLY,
+     L       DO_QUASPHER_BEAM,        DO_QSREFRAC_BEAM,
+     L       DO_CHAPMAN_FUNCTION,
+     L       DO_CLASSICAL_SOLUTION,   DOUBLE_CONV_TEST,
+     L       DO_LAMBERTIAN_ALBEDO,    DO_SURFACE_EMISSION,
+     L       DO_FULL_QUADRATURE,      SAVE_LAYER_MSST,
+     L       DO_ALL_FOURIER,          DO_NO_AZIMUTH, 
+     L       DO_DELTAM_SCALING,       DO_QUAD_OUTPUT,
+     L       DO_ADDITIONAL_MVOUT,     DO_MVOUT_ONLY,
+     L       DO_USER_STREAMS,         DO_USER_TAUS, DO_LBOUND_TAUS,
+     L       DO_UPWELLING,            DO_DNWELLING,
+     L       DO_DEBUG_WRITE,          DO_WRITE_RESULTS_IDL,
+     L       DO_WRITE_SCENARIO,       DO_WRITE_RESULTS,
+     L       DO_WRITE_INPUT,          DO_WRITE_FOURIER,
+     L       DO_FULLRAD_MODE,         DO_SSCORRECTION
+
+	COMMON / LIDORT_CONTROL_FILENAMES /
+     &    LIDORT_ERROR_INIT,      LIDORT_ERROR_FILENAME, 
+     &    INPUT_WRITE_FILENAME,   SCENARIO_WRITE_FILENAME,
+     &    RESULTS_WRITE_FILENAME, FOURIER_WRITE_FILENAME,
+     &    IDLRESULTS_WRITE_FILENAME
+
+	SAVE   / LIDORT_CONTROL_INPUTS /
+	SAVE   / LIDORT_CONTROL_FILENAMES /
+
+C  End of file.

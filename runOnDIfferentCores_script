@@ -1,0 +1,31 @@
+#!/bin/csh -f
+
+set maxNumCores = 8
+
+set numStrings = {"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"}
+
+set year=$argv[1]
+set month=$argv[2]
+set day=$argv[3]
+set lastDay=$argv[4]
+
+set numDays = `expr $lastDay - $day`
+set numDays = `expr $numDays + 1`
+set daysPerCore = `expr $numDays / $maxNumCores`
+set extraDays = `expr $numDays % $maxNumCores`
+
+while ($day <= $lastDay)
+  set thisEndDay = `expr $day + $daysPerCore`
+    if ($extraDays > 0) then
+      set extraDays = `expr $extraDays - 1`
+    else
+      set thisEndDay = `expr $thisEndDay - 1`
+  endif
+
+  set logName = "logs/log.NO2_"
+  set logName = $logName$numStrings[$year]$numStrings[$month]$numStrings[$day]
+  set logName = $logName"_"$thisEndDay
+  nohup ./test_scia.sh $year $month $day $thisEndDay > $logName &
+  set day = `expr $thisEndDay + 1`
+end
+

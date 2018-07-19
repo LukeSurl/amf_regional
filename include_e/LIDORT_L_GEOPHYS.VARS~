@@ -1,0 +1,51 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  This is LIDORT_L_GEOPHYS.VARS.
+
+C  Layer linearization (atmospheric variation) input
+C  Layer linearization (phase function variation) input
+
+	DOUBLE PRECISION
+     &       OMEGA_VARS_TOTAL_INPUT(MAX_PARAMETERS,MAXLAYER),
+     &       EXT_VARS_INPUT(MAX_PARAMETERS,MAXLAYER),
+     &       PHASMOM_VARS_TOTAL_INPUT
+     &            (MAX_PARAMETERS,0:MAXMOMENT,MAXLAYER)
+
+C  Control for layer linearizations
+
+	LOGICAL		 LAYER_VARY_FLAG(MAXLAYER)
+	INTEGER		 LAYER_VARY_NUMBER(MAXLAYER)
+
+C  commons  
+
+	COMMON / LIDORT_L_ATMOS_INPUTS /
+     A       OMEGA_VARS_TOTAL_INPUT, PHASMOM_VARS_TOTAL_INPUT,
+     A       EXT_VARS_INPUT,
+     A       LAYER_VARY_NUMBER, LAYER_VARY_FLAG
+
+	SAVE   / LIDORT_L_ATMOS_INPUTS /
+
+C  End of file.

@@ -1,0 +1,60 @@
+C $Id: CMN_READATMOS
+      !=======================================================================
+      ! CMN_READATMOS: Common block variables for LIDORT (dbm, 4/03/2006)
+      !
+      ! NOTES:
+      ! (1 ) 
+      !=======================================================================
+
+! #     include "include_s/LIDORT.PARS"
+
+      !=======================================================================
+      ! Integer
+      !=======================================================================
+      INTEGER ::      NGRID, N_OTHERGAS
+      COMMON /RDATM1/ NGRID, N_OTHERGAS
+
+      SAVE / RDATM1 /
+
+      ! ----------------
+      ! Threadprivate declaration for OpenMP parallelization (dbm)
+      !$OMP THREADPRIVATE( /RDATM1/ )
+      ! ----------------
+
+      INTEGER ::      MAX_OTHERGAS
+      PARAMETER	( MAX_OTHERGAS = 2 )
+
+      !=======================================================================
+      ! Character
+      !=======================================================================
+      CHARACTER*4 ::      ACTIVEGAS_NAME, OTHERGAS_NAMES(MAX_OTHERGAS)
+      COMMON /RDATM2/ ACTIVEGAS_NAME, OTHERGAS_NAMES
+
+      SAVE / RDATM2 /
+
+      ! ----------------
+      ! Threadprivate declaration for OpenMP parallelization (dbm)
+      !$OMP THREADPRIVATE( /RDATM2/ )
+      ! ----------------
+
+      !=======================================================================
+      ! REAL*8
+      !=======================================================================
+      REAL*8 ::      ZGRID(MAXLAYER), DELTA(MAXLAYER)
+      REAL*8 ::	     PRESSURE(MAXLAYER)
+      REAL*8 ::      TEMPERATURE(MAXLAYER), ACTIVEGAS_CONC(MAXLAYER)
+      REAL*8 ::      OTHERGAS_VMRS(MAXLAYER,MAX_OTHERGAS)
+      REAL*8 ::      AERSCAT(MAXLAYER), AEREXTC(MAXLAYER)
+      REAL*8 ::      PHASEFCN(MAXLAYER,0:7)
+      COMMON /RDATM3/ 
+     &	ZGRID, PRESSURE,
+     &	TEMPERATURE, ACTIVEGAS_CONC,
+     &	OTHERGAS_VMRS,
+     &	AERSCAT, AEREXTC,
+     &	PHASEFCN
+     
+      SAVE / RDATM3 /
+      ! ----------------
+      ! Threadprivate declaration for OpenMP parallelization (dbm)
+      !$OMP THREADPRIVATE( /RDATM3/ )
+      ! ----------------

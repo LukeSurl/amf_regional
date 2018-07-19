@@ -1,0 +1,6 @@
+
+Bad input: Sun angle not in range [0,90)                              
+Look at SUN0 input                                                    
+
+ LIDORT_CHECKINPUT failed                                             
+ Called in LIDORT_V23E_MASTER                                         

@@ -1,0 +1,198 @@
+Sender: LSF System <lsfadmin@host264.jc.rl.ac.uk>
+Subject: Job 7699662: <amf-20140401> in cluster <lotus> Exited
+
+Job <amf-20140401> was submitted from host <host292.jc.rl.ac.uk> by user <lsurl> in cluster <lotus>.
+Job was executed on host(s) <host264.jc.rl.ac.uk>, in queue <lotus>, as user <lsurl> in cluster <lotus>.
+</home/users/lsurl> was used as the home directory.
+</home/users/lsurl/amf581CL> was used as the working directory.
+Started at Thu Aug 25 17:20:28 2016
+Results reported on Thu Aug 25 17:24:14 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+/home/users/lsurl/amf581CL/amf.run /home/users/lsurl/CL/ts_omi.20140401.bpch /group_workspaces/jasmin/geoschem/local_users/lsurl/runs/geosfp_025x03125_tropchem_in_2014/ts_omi.20140401.bpch /home/users/lsurl/amf581CL/output/20140401_amfs.hcho 2014 04 01:
+------------------------------------------------------------
+
+Exited with exit code 29.
+
+Resource usage summary:
+
+    CPU time :                                   226.38 sec.
+    Max Memory :                                 68.47 MB
+    Average Memory :                             52.36 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   537 MB
+    Max Processes :                              3
+    Max Threads :                                4
+
+The output (if any) follows:
+
+ It begins...
+ Input read...
+ Read in trace gas mixing ratios
+ BPCH2 details:
+ /group_workspaces/jasmin/geoschem/local_users/lsurl/runs/geosfp_025x03125_tropc
+ hem_in_2014/ts_omi.20140401.bpch                                               
+                                                                                
+                   
+ IJ-AVG-$                                
+          20
+   256368.000000000     
+         112
+         144
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     20
+ ==================================================================
+ Read in surface pressure
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      1
+ ==================================================================
+ Read in temperature
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      3
+ ==================================================================
+ read in aerosols
+ I think there are this many aersols:            5
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      4
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      6
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      9
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     12
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     15
+ ==================================================================
+ read in sea salt
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     18
+ Now the aerosol parameters
+ uvalbedo.geos.025x03125                                                        
+                                                                                
+                                                                                
+                   
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =    2160.00 and tracer #      1
+ Read in tropopause levels
+ TAU_IN is    256368.000000000     
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     15
+ ==================================================================
+ Read in slant columns
+ Read satellite information
+forrtl: No such file or directory
+forrtl: severe (29): file not found, unit 20, file /home/users/lsurl/CL/ts_omi.20140401.bpch
+Image              PC                Routine            Line        Source             
+amf.run            000000000057D79C  Unknown               Unknown  Unknown
+amf.run            000000000056CFD9  Unknown               Unknown  Unknown
+amf.run            0000000000404ED7  Unknown               Unknown  Unknown
+amf.run            0000000000403396  Unknown               Unknown  Unknown
+libc.so.6          0000003CA8C1ED1D  Unknown               Unknown  Unknown
+amf.run            0000000000403289  Unknown               Unknown  Unknown
+Sender: LSF System <lsfadmin@host126.jc.rl.ac.uk>
+Subject: Job 7700165: <amf-20140401> in cluster <lotus> Exited
+
+Job <amf-20140401> was submitted from host <host292.jc.rl.ac.uk> by user <lsurl> in cluster <lotus>.
+Job was executed on host(s) <host126.jc.rl.ac.uk>, in queue <lotus>, as user <lsurl> in cluster <lotus>.
+</home/users/lsurl> was used as the home directory.
+</home/users/lsurl/amf581CL> was used as the working directory.
+Started at Thu Aug 25 17:26:53 2016
+Results reported on Thu Aug 25 17:31:00 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+/home/users/lsurl/amf581CL/amf.run /home/users/lsurl/CL/ts_omi.20140401.bpch /group_workspaces/jasmin/geoschem/local_users/lsurl/runs/geosfp_025x03125_tropchem_in_2014/ts_omi.20140401.bpch /home/users/lsurl/amf581CL/output/20140401_amfs.hcho 2014 04 01:
+------------------------------------------------------------
+
+Exited with exit code 59.
+
+Resource usage summary:
+
+    CPU time :                                   245.17 sec.
+    Max Memory :                                 66.14 MB
+    Average Memory :                             49.38 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   537 MB
+    Max Processes :                              3
+    Max Threads :                                4
+
+The output (if any) follows:
+
+ It begins...
+ Input read...
+ Read in trace gas mixing ratios
+ BPCH2 details:
+ /group_workspaces/jasmin/geoschem/local_users/lsurl/runs/geosfp_025x03125_tropc
+ hem_in_2014/ts_omi.20140401.bpch                                               
+                                                                                
+                   
+ IJ-AVG-$                                
+          20
+   256368.000000000     
+         112
+         144
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     20
+ ==================================================================
+ Read in surface pressure
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      1
+ ==================================================================
+ Read in temperature
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      3
+ ==================================================================
+ read in aerosols
+ I think there are this many aersols:            5
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      4
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      6
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #      9
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     12
+ ==================================================================
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     15
+ ==================================================================
+ read in sea salt
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     18
+ Now the aerosol parameters
+ uvalbedo.geos.025x03125                                                        
+                                                                                
+                                                                                
+                   
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =    2160.00 and tracer #      1
+ Read in tropopause levels
+ TAU_IN is    256368.000000000     
+ Degub point 0.0
+READ_BPCH2: Found data for TAU =  256368.00 and tracer #     15
+ ==================================================================
+ Read in slant columns
+ Read satellite information
+forrtl: severe (59): list-directed I/O syntax error, unit 20, file /home/users/lsurl/CL/ts_omi.20140401.bpch
+Image              PC                Routine            Line        Source             
+amf.run            00000000005948B7  Unknown               Unknown  Unknown
+amf.run            00000000005924D7  Unknown               Unknown  Unknown
+amf.run            000000000056D042  Unknown               Unknown  Unknown
+amf.run            0000000000404ED7  Unknown               Unknown  Unknown
+amf.run            0000000000403396  Unknown               Unknown  Unknown
+libc.so.6          00000038EC41ED1D  Unknown               Unknown  Unknown
+amf.run            0000000000403289  Unknown               Unknown  Unknown

@@ -1,0 +1,60 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  Saved results from the Single scatter correction module
+C  =======================================================
+
+C  Saved Legendre polynomials
+
+	DOUBLE PRECISION
+     C   SS_PLEG_UP(MAX_USER_STREAMS,MAX_USER_RELAZMS,0:MAXMOMENT),
+     C   SS_PLEG_DN(MAX_USER_STREAMS,MAX_USER_RELAZMS,0:MAXMOMENT)
+
+C  Saved TMS (Nakajima-Tanaka) factor
+
+        DOUBLE PRECISION TMS(MAXLAYER)
+
+C  Exact Phase function calculations
+
+	DOUBLE PRECISION
+     C   EXACTSCAT_UP(MAX_USER_STREAMS,MAX_USER_RELAZMS,MAXLAYER),
+     C   EXACTSCAT_DN(MAX_USER_STREAMS,MAX_USER_RELAZMS,MAXLAYER)
+
+C  Cumulative single scatter source terms
+
+	DOUBLE PRECISION
+     C  SS_CUMSOURCE_UP(MAX_USER_STREAMS,MAX_USER_RELAZMS,0:MAXLAYER),
+     C  SS_CUMSOURCE_DN(MAX_USER_STREAMS,MAX_USER_RELAZMS,0:MAXLAYER)
+
+C  Commons storage
+
+	COMMON / LIDORT_SSCORR /
+     &   SS_PLEG_UP,      SS_PLEG_DN,      TMS, 
+     &   EXACTSCAT_UP,    EXACTSCAT_DN,
+     &   SS_CUMSOURCE_UP, SS_CUMSOURCE_DN
+
+	SAVE   / LIDORT_SSCORR /
+
+C  End of file.

@@ -1,0 +1,105 @@
+Originally Prepared by Randall Martin, (28 April 2005)
+
+This algorithm calculates AMFs for NO2 and HCHO.  The original formulation for HCHO is described in in Palmer et al. [2001].  Modification to perform the calculation for NO2 and to account for clouds is described in Martin et al. [2002].  Subsequent development to account for aerosols and to eliminate the tabulation of scattering weights by calling directly the LIDORT radiative transfer model [Spurr, 2002] as described in Martin et al. [2003].
+
+Instructions
+
+The algorithm uses vertical trace gas and aerosol profiles from an independent source.  It is currently set up to obtain these profiles from the file ts*bpch, generated with diag51_mod.f of GEOS-CHEM.  Model fields archived between 9am and noon are probably best for global GOME analysis given the 10:30 equator crossing time.  An average between 9am and 11am is more suitable for SCIAMACHY.
+
+Set the satellite in define.h
+The primary difference between GOME and SCIAMACHY is the cloud treatment.  GOME uses GOMECAT cloud fields that include an optical thickness parameter.  The SCIAMACHY and OMI routines are  designed for cloud fields that provide only cloud fraction and cloud pressure.  The difference between GOME and NEW_GOME is the temperature at which the NO2 fit occurs, 293k for GOME and 241k for NEW_GOME.
+
+The current Makefile compiles with HDF libraries. Only the OMI and Look Up Table algorithms require with these libraries. If you do not have them you can compile without by editing the "Build Executable" section of the Makefile. Also you will need to comment out the "USE OmiModule","USE MAmfLut" and "USE Mrweight" lines at the begining of main.F.
+
+The file 'main.F' contains the paths for reading and writing data.
+The output format is specified near the end of main.f.
+  
+Set the appropriate grid sizes in define.h
+
+Compile the code with 'gmake'.  This creates the executable amf.run    
+The scripts 'test_gome.sh' and 'test_scia.sh' contain sample shells to execute the code. 
+
+AUG97 contains AMFs calculated from an orbit in August 1997 for testing.  SCIAMACHY contains AMFs calculated from an orbit in 2004 for testing.
+
+Please contact randall.martin@dal.ca, with any comments or questions.
+
+Good Practices:
+We have attempted to set up the AMF code to calculate all AMFs unless the data is flaged as questionable in the satellite data product. The user is encouraged to further filter the data. It is suggested to remove observations with very high solar zenith angles and observations where the cloud pressure is significantly larger then the surface pressure.
+The mie scattering code should be used with caution.
+
+Code originally written by Paul Palmer for HCHO, Spring 2000.
+Subsequently modified by Randall Martin
+    for NO2 (winter 2000)
+    to correct a bug in the regridding (winter 2000)
+    to correct a bug in the albedo interpolation (winter 2000)
+    to account for scattering by clouds on NO2 (spring 2001)
+    to use albedos from Satellite at 440 for NO2 (summer 2001)
+    to account for scattering by clouds on HCHO (fall 2001)
+    to toggle easily between NO2 and HCHO (fall 2001)
+    to correct ESZA approximation with SZA and VZA (11/14/01)
+    to enable calculations at 4x5 resolution (5/22/02)
+    completely revamped to call LIDORT directly (5/31/02)
+      code now bears little resemblance to original
+    to account for aerosols using 3-D fields from GEOS-CHEM (6/20/02)
+    upgraded LIDORT to v2.3 (7/3/02)
+    added temperature dependence for NO2 (10/16/02)
+    changed tropopause from annual mean to varying (10/16/02)
+    upgraded Makefile for compatibility on Sun and Alpha (4/23/03)
+   upgraded Makefile for Linux with help from Thomas Kurosu (5/24/04)
+    added the option for Lambertian clouds for SCIAMACHY (9/8/04)
+    updated for GEOS_4 (9/9/04)
+    added more wavelength bins to jv_spec.dat (9/24/04)
+    fixed a minor bug in the GOME cloud implementation (10/4/04)
+    fixed a bug in the temperature correction (4/25/05)
+    corrected an out-of-bounds error with help from bnd (5/17/05)
+    minor correction to the calculation of eta levels (3/1/06)
+===========================
+dbm modifications: standard code
+===========================
+1) Modified compiler flags in Makefile to work with Harvard machines.  Code now
+   compiles for sgi and ifort but not efc.  The Linux EFC compiler appears
+   to dislike the INCLUDE '../include_s/LIDORT.PARS' etc. statements in
+   LIDORT_V23E_MASTER.f.  Changing the paths to 'include_s/LIDORT.PARS' etc.
+   seemed like it would work.  Code is currently set up to build on the IFORT
+   Intel v9 compiler.  Deleted Makefile.ifc to avoid confusion.
+2) Wrote perl script compile_amf to compile from callisto or europa.
+   > submit cmp_it2 compile_amf
+===========================
+dbm modifications: OMI-specific
+===========================
+1) Added functions He5ErrorModule.f90, He5SwathModule.f90,
+   He5IncludeModule.f90, OmiModule.f90, and linux_err.c
+   for accessing the OMI HDF-EOS5 files.
+2) Modified define.h to specify type of machine being run on,
+   and machine-specific integer size for certain HDF-EOS5 functions
+3) Modified Makefile to compile with the OMI-relevant programs and
+   modules.
+4) Modified main.F to read in annual mean geos-4 tropopause height for OMI
+
+----------------------------------------------------------
+Gray O'Byrne Modifications:
+----------------------------------------------------------
+1) Added Functions to OmiModule.f90 for reading OMI NO2 files
+2) Merged Look Up Table code from dbm with regular version.
+   Option to use LUT is now in define.h
+3) Added fresco 5 implementation from A. Van Donkelaar
+4) Scenes with AMFCLD = 0 are no longer rejected.
+
+----------------------------------------------------------
+Version 5.6 Modifications:
+----------------------------------------------------------
+1) Updated for GEOS_5 (N.Bousserez  02/08/09)
+2) Implemented 1x1 (Koelemeiger) Albedos for NO2 (Gray O'Byrne  02/24/09)
+3) Modified Makefile to contain a switch for compilation without HDF libraries (Gray O'Byrne  02/24/09)
+
+----------------------------------------------------------
+Version 5.7 Modifications:
+----------------------------------------------------------
+1) Implemented Kleipool et al. [2008]  Albedos at 440 nm (Gray O'Byrne  03/17/09)
+
+----------------------------------------------------------
+Version 5.8
+----------------------------------------------------------
+1) Calculate WSCAT in code  (Akhila Padmanabhan)
+2) Create output files for WSCAT & Shape Factor [S]  (Gray O'Byrne  09/11/09)
+3) Move LUT code to a seperate file (Mlut_use.F)  (Gray O'Byrne 09/23/09)

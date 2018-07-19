@@ -1,0 +1,24 @@
+OMP: Error #34: System unable to allocate necessary resources for OMP thread:
+OMP: System error #11: Resource temporarily unavailable
+OMP: Hint: Try decreasing the value of OMP_NUM_THREADS.
+forrtl: error (76): Abort trap signal
+Image              PC                Routine            Line        Source             
+amf.run            00000000005F75B9  Unknown               Unknown  Unknown
+amf.run            00000000005F5F30  Unknown               Unknown  Unknown
+amf.run            00000000005AEF32  Unknown               Unknown  Unknown
+amf.run            000000000056DB88  Unknown               Unknown  Unknown
+amf.run            0000000000571A82  Unknown               Unknown  Unknown
+libpthread.so.0    0000003189E0F790  Unknown               Unknown  Unknown
+libc.so.6          0000003189632625  Unknown               Unknown  Unknown
+libc.so.6          0000003189633E05  Unknown               Unknown  Unknown
+libiomp5.so        00007F7873523456  Unknown               Unknown  Unknown
+libiomp5.so        00007F787350CE8C  Unknown               Unknown  Unknown
+libiomp5.so        00007F787354256C  Unknown               Unknown  Unknown
+libiomp5.so        00007F787351D242  Unknown               Unknown  Unknown
+libiomp5.so        00007F787351B305  Unknown               Unknown  Unknown
+libiomp5.so        00007F787351AB9A  Unknown               Unknown  Unknown
+libiomp5.so        00007F78734F92E8  Unknown               Unknown  Unknown
+amf.run            00000000004060ED  Unknown               Unknown  Unknown
+amf.run            0000000000403976  Unknown               Unknown  Unknown
+libc.so.6          000000318961ED5D  Unknown               Unknown  Unknown
+amf.run            0000000000403869  Unknown               Unknown  Unknown

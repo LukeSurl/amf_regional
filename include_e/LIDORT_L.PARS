@@ -1,0 +1,45 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  This is LIDORT_L.PARS.
+
+C  File of constants for linearized part of LIDORT model.
+C    Core file LIDORT.PARS must be declared first
+
+C  Version number
+C  ==============
+
+	CHARACTER*5	 LIDORT_VERSION_NUMBER_E
+	PARAMETER	 ( LIDORT_VERSION_NUMBER_E = '2.3_E' )
+
+C  Maximum number of varying parameters
+
+	INTEGER	   	 MAX_PARAMETERS
+	PARAMETER 	 ( MAX_PARAMETERS = 9 )
+
+C  Maximum number of streams + 1
+
+	INTEGER		 MAXSTRM_P1
+	PARAMETER	 ( MAXSTRM_P1 = MAXSTRM + 1 )

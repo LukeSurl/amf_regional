@@ -1,0 +1,12 @@
+
+eigenvalue   4 has not converged                                      
+ASYMTX error, HOMOGENEOUS_SOLUTION, Layer=  1                         
+
+Error from HOMOGENEOUS_SOLUTION, layer 1                              
+Call in LIDORT_RTSOLUTION                                             
+
+Error return from module LIDORT_RTSOLUTION                            
+First Call in LIDORT_V23E_FOURIER                                     
+
+Error from LIDORT_V23E_FOURIER, Fourier =   0                         
+Called by LIDORT_V23E_MASTER                                          

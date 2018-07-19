@@ -1,0 +1,101 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  LIDORT.PARS should be included first.
+
+C  Geophysical Quantities
+C  ======================
+
+C  Workspace geophysical variables
+C  -------------------------------
+
+C    ( same as original inputs if there is no DELTAM-scaling)
+C    ( see LIDORT_GEOPHYS.VARS for more definition )
+
+	DOUBLE PRECISION TAUGRID(0:MAXLAYER)
+	DOUBLE PRECISION TAUSLANT(0:MAXLAYER)
+	DOUBLE PRECISION TAUTHICK(MAXLAYER,MAXLAYER)
+	DOUBLE PRECISION OMEGA_TOTAL(MAXLAYER)
+	DOUBLE PRECISION PHASMOMS_TOTAL(0:MAXMOMENT,MAXLAYER)
+
+C  Saved arrays involving OMEGA and phase function moments
+
+	DOUBLE PRECISION OMEGA_MOMS(MAXLAYER,0:MAXMOMENT)
+	DOUBLE PRECISION TRUNC_FACTOR(MAXLAYER)
+	DOUBLE PRECISION FAC1(MAXLAYER)
+
+C  optical layer depths
+
+	DOUBLE PRECISION DELTA(MAXLAYER)
+
+C  Transmittance factors
+C  =====================
+
+C  transmittance factors for +/- eigenvalues
+C     Whole layer (DELTA), User optical depths (UTUP and UTDN)
+C     These depend on eigensolutions and will change for each Fourier
+
+	DOUBLE PRECISION T_DELT_EIGEN(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION T_UTUP_EIGEN(MAXSTRM,MAX_OFFGRID_USERTAUS)
+	DOUBLE PRECISION T_UTDN_EIGEN(MAXSTRM,MAX_OFFGRID_USERTAUS)
+
+C  Transmittance factors for average secant stream
+
+	DOUBLE PRECISION T_DELT_MUBAR(0:MAXLAYER)
+	DOUBLE PRECISION T_UTDN_MUBAR(MAX_OFFGRID_USERTAUS)
+	DOUBLE PRECISION T_UTUP_MUBAR(MAX_OFFGRID_USERTAUS)
+
+C  Transmittance factors for user-defined stream angles
+
+	DOUBLE PRECISION
+     &     T_DELT_USERM(MAXLAYER,MAX_USER_STREAMS),
+     &     T_UTDN_USERM(MAX_OFFGRID_USERTAUS,MAX_USER_STREAMS),
+     &     T_UTUP_USERM(MAX_OFFGRID_USERTAUS,MAX_USER_STREAMS)
+
+C  Basic layer variables
+
+	DOUBLE PRECISION INITIAL_TRANS(MAXLAYER)
+	DOUBLE PRECISION ITRANS_USERM(MAXLAYER,MAX_USER_STREAMS)
+	DOUBLE PRECISION AVERAGE_SECANT(MAXLAYER)
+	DOUBLE PRECISION LOCAL_SZA(MAXLAYER)
+
+C  commons
+C  =======
+
+	COMMON / LIDORT_TRANS_FACTORS /
+     &       T_DELT_EIGEN, T_UTUP_EIGEN, T_UTDN_EIGEN,
+     &       T_DELT_MUBAR, T_UTUP_MUBAR, T_UTDN_MUBAR, 
+     &       T_DELT_USERM, T_UTUP_USERM, T_UTDN_USERM
+
+	COMMON / LIDORT_ATMOS_LOCAL /
+     A   PHASMOMS_TOTAL, OMEGA_TOTAL,
+     A   TAUGRID, TAUSLANT, TAUTHICK, DELTA,
+     D   OMEGA_MOMS, TRUNC_FACTOR, FAC1,
+     &   INITIAL_TRANS, ITRANS_USERM, AVERAGE_SECANT, LOCAL_SZA
+
+	SAVE   / LIDORT_TRANS_FACTORS /
+	SAVE   / LIDORT_ATMOS_LOCAL /
+
+C  End of file.

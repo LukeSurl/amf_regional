@@ -1,0 +1,213 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  LIDORT.PARS should be included first.
+
+C  Major solution variables (Discrete Ordinate)
+C  ========================
+
+C  Solutions to the homogeneous RT equations 
+C  -----------------------------------------
+
+C  local matrices for eigenvalue computation
+
+	DOUBLE PRECISION
+     &      SAB(MAXSTRM,MAXSTRM),
+     &      DAB(MAXSTRM,MAXSTRM),
+     &      EIGENMAT_SAVE(MAXSTRM,MAXSTRM),
+     &      EIGENVEC_SAVE(MAXSTRM,MAXSTRM),
+     &      DIFVEC_SAVE(MAXSTRM,MAXSTRM)
+
+C  (Positive) Eigenvalues
+
+	DOUBLE PRECISION KEIGEN(MAXSTRM,MAXLAYER)
+
+C  Eigenvector solutions
+
+	DOUBLE PRECISION XPOS(MAXSTRM2,MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION XNEG(MAXSTRM2,MAXSTRM,MAXLAYER)
+
+C  Reflected homogeneous solutions at ground
+
+	DOUBLE PRECISION R2_HOMP(MAXSTRM,MAXSTRM)
+	DOUBLE PRECISION R2_HOMM(MAXSTRM,MAXSTRM)
+
+C  Solutions to the Beam particular integral part of RT equations
+C  --------------------------------------------------------------
+
+C  General beam solutions at the boundaries
+
+	DOUBLE PRECISION WUPPER(MAXSTRM2,MAXLAYER)
+	DOUBLE PRECISION WLOWER(MAXSTRM2,MAXLAYER)
+
+C  Reflected beam solution at ground
+
+	DOUBLE PRECISION R2_BEAM(MAXSTRM)
+
+C  Classical solution
+C  ******************
+
+C  Classical beam solution matrices and vectors
+C     (saved because required again for linearization)
+
+	DOUBLE PRECISION QSUMVEC_SAVE(MAXSTRM)
+	DOUBLE PRECISION QDIFVEC_SAVE(MAXSTRM)
+	DOUBLE PRECISION QVEC_SAVE(MAXSTRM)
+	DOUBLE PRECISION QDIF_SAVE(MAXSTRM)
+	DOUBLE PRECISION QMAT_SAVE(MAXSTRM,MAXSTRM)
+	INTEGER		 QPIVOT(MAXSTRM)
+
+C  Beam solution independent of optical depth (classical solution)
+
+	DOUBLE PRECISION WVEC(MAXSTRM2,MAXLAYER)
+
+C  Green function solution
+C  ***********************
+
+C  Saved quantities for the Green function solution
+
+	DOUBLE PRECISION ATERM_SAVE(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION BTERM_SAVE(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION DMI(MAXSTRM), DPI(MAXSTRM), NORM_SAVED(MAXSTRM)
+
+C  Layer C and D functions
+
+	DOUBLE PRECISION CFUNC(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION DFUNC(MAXSTRM,MAXLAYER)
+
+C  Layer C and D functions
+
+	DOUBLE PRECISION AGM(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION BGP(MAXSTRM,MAXLAYER)
+
+C  Green function Multipliers for solution
+C         ( GFUNC_DN = CFUNC * ATERM_SAVE )
+C         ( GFUNC_UP = DFUNC * BTERM_SAVE )
+	
+	DOUBLE PRECISION GFUNC_UP(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION GFUNC_DN(MAXSTRM,MAXLAYER)
+
+C  Boundary value problem
+C  ----------------------
+
+C  Matrix, Band-matrix and column for solving BCs
+
+C	DOUBLE PRECISION MAT2(MAXTOTAL,MAXTOTAL)
+	DOUBLE PRECISION COL2(MAXTOTAL,1)
+	DOUBLE PRECISION BANDMAT2(MAXBANDTOTAL,MAXTOTAL)
+	INTEGER		 IPIVOT(MAXTOTAL)
+	INTEGER		 BMAT_ROWMASK(MAXTOTAL,MAXTOTAL)
+
+C  Solution constants of integration, and related quantities
+
+ 	DOUBLE PRECISION LCON(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION MCON(MAXSTRM,MAXLAYER)
+ 	DOUBLE PRECISION LCON_XVEC(MAXSTRM2,MAXSTRM,MAXLAYER)
+ 	DOUBLE PRECISION MCON_XVEC(MAXSTRM2,MAXSTRM,MAXLAYER)
+
+C  Quadrature-defined solutions
+C  ============================
+
+	DOUBLE PRECISION
+     C   QUADINTENS(MAX_OUT_USERTAUS,MAXSTRM,MAX_DIRECTIONS)
+
+C  User-defined solutions
+C  ======================
+
+C  Saved help variables
+
+	DOUBLE PRECISION U_HELP_P(MAXSTRM,0:MAXMOMENT)
+	DOUBLE PRECISION U_HELP_M(MAXSTRM,0:MAXMOMENT)
+ 	DOUBLE PRECISION W_HELP(0:MAXMOMENT)
+
+C  Eigenvectors defined at user-defined stream angles
+C     EP for the positive KEIGEN values, EM for -ve KEIGEN
+
+	DOUBLE PRECISION
+     U        U_XPOS(MAX_USER_STREAMS,MAXSTRM,MAXLAYER),
+     U        U_XNEG(MAX_USER_STREAMS,MAXSTRM,MAXLAYER)
+
+C  Particular beam solutions at user-defined stream angles
+
+	DOUBLE PRECISION
+     U        U_WPOS1(MAX_USER_STREAMS,MAXLAYER),
+     U        U_WNEG1(MAX_USER_STREAMS,MAXLAYER)
+	DOUBLE PRECISION
+     U        U_WPOS2(MAX_USER_STREAMS,MAXLAYER),
+     U        U_WNEG2(MAX_USER_STREAMS,MAXLAYER)
+
+C  Combined values
+
+	DOUBLE PRECISION
+     U        LCON_UXVEC(MAX_USER_STREAMS,MAXSTRM),
+     U        MCON_UXVEC(MAX_USER_STREAMS,MAXSTRM)
+
+C  BOA source terms 
+
+	DOUBLE PRECISION BOA_SOURCE(MAX_USER_STREAMS)
+	DOUBLE PRECISION DIRECT_BOA_SOURCE(MAX_USER_STREAMS)
+
+C  Cumulative source terms
+
+	DOUBLE PRECISION
+     U    CUMSOURCE_UP(MAX_USER_STREAMS,0:MAXLAYER),
+     U    CUMSOURCE_DN(MAX_USER_STREAMS,0:MAXLAYER)
+
+C  Commons
+C  =======
+
+C  Components of the Discrete Ordinate solution
+
+	COMMON / COMPONENTS_DORD_SOLUTION /
+     &      SAB, DAB, EIGENMAT_SAVE, EIGENVEC_SAVE, DIFVEC_SAVE,
+     &      KEIGEN, XPOS, XNEG, R2_HOMP, R2_HOMM,
+     &      WVEC, WUPPER, WLOWER, R2_BEAM, QUADINTENS,
+     &      DMI, DPI, NORM_SAVED, ATERM_SAVE, BTERM_SAVE,
+     &      CFUNC, DFUNC, AGM, BGP, GFUNC_UP, GFUNC_DN,
+     &      QSUMVEC_SAVE, QDIFVEC_SAVE,
+     &      QVEC_SAVE, QDIF_SAVE, QMAT_SAVE, QPIVOT
+
+C  User-defined solutions
+
+	COMMON / USER_SOLUTION_VARIABLES /
+     &    U_XPOS, U_XNEG, U_HELP_P, U_HELP_M,
+     &    W_HELP, LCON_UXVEC, MCON_UXVEC,
+     &    U_WPOS1, U_WNEG1, U_WPOS2, U_WNEG2,
+     &    CUMSOURCE_UP, CUMSOURCE_DN, BOA_SOURCE, DIRECT_BOA_SOURCE
+
+C  matrices used in the boundary value problem
+
+	COMMON / BOUNDARY_VALUE_PROBLEM /
+     &      BANDMAT2, COL2,
+     &      LCON, MCON, LCON_XVEC, MCON_XVEC,
+     &      IPIVOT, BMAT_ROWMASK
+
+C  save statements
+
+	SAVE   / COMPONENTS_DORD_SOLUTION /
+	SAVE   / USER_SOLUTION_VARIABLES /
+	SAVE   / BOUNDARY_VALUE_PROBLEM /
+
+C  End of file.

@@ -1,0 +1,94 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  multiplier arrays
+C  -----------------
+
+C  Holding arrays for Green function coefficients
+
+	DOUBLE PRECISION
+     &        L_GAMMA_M (MAXSTRM,MAXLAYER,MAXLAYER,MAX_PARAMETERS),
+     &        L_GAMMA_P (MAXSTRM,MAXLAYER,MAXLAYER,MAX_PARAMETERS)
+
+C  Holding arrays for Green function quadrature Multipliers
+
+	DOUBLE PRECISION L_UT_GMULT_DN
+     *       (MAXSTRM,MAX_OFFGRID_USERTAUS,MAXLAYER,MAX_PARAMETERS)
+	DOUBLE PRECISION L_UT_GMULT_UP
+     *       (MAXSTRM,MAX_OFFGRID_USERTAUS,MAXLAYER,MAX_PARAMETERS)
+
+C  Whole layer homoogeneous term multipliers
+
+	DOUBLE PRECISION 
+     &    L_HMULT_1(MAXSTRM,MAX_USER_STREAMS,MAXLAYER,MAX_PARAMETERS),
+     &    L_HMULT_2(MAXSTRM,MAX_USER_STREAMS,MAXLAYER,MAX_PARAMETERS)
+
+	DOUBLE PRECISION L_UT_HMULT_UP_UP
+     &  (MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS,MAX_PARAMETERS)
+
+	DOUBLE PRECISION L_UT_HMULT_UP_DN
+     &  (MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS,MAX_PARAMETERS)
+
+	DOUBLE PRECISION L_UT_HMULT_DN_UP
+     &  (MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS,MAX_PARAMETERS)
+
+	DOUBLE PRECISION L_UT_HMULT_DN_DN
+     &  (MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS,MAX_PARAMETERS)
+
+	LOGICAL		L_HMULT_EXIST(MAXLAYER)
+
+C  forcing term multipliers (saved for whole atmosphere)
+
+	DOUBLE PRECISION 
+     &  L_EMULT_UP(MAX_USER_STREAMS,MAXLAYER,MAXLAYER,MAX_PARAMETERS),
+     &  L_EMULT_DN(MAX_USER_STREAMS,MAXLAYER,MAXLAYER,MAX_PARAMETERS)
+
+	DOUBLE PRECISION L_UT_EMULT_UP
+     &  (MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS,MAXLAYER,MAX_PARAMETERS)
+	DOUBLE PRECISION L_UT_EMULT_DN
+     &  (MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS,MAXLAYER,MAX_PARAMETERS)
+
+C  Green function multipliers (local)
+
+	DOUBLE PRECISION 
+     &    L_SGMULT_UP(MAXSTRM,MAX_USER_STREAMS,MAX_PARAMETERS),
+     &    L_SGMULT_DN(MAXSTRM,MAX_USER_STREAMS,MAX_PARAMETERS)
+
+C  Commons
+C  -------
+
+	COMMON / LINEARIZED_MULTIPLIER_VARIABLES /
+     C       L_GAMMA_M,        L_GAMMA_P,
+     C       L_UT_GMULT_DN,    L_UT_GMULT_UP,
+     H       L_HMULT_1,        L_HMULT_2,
+     H       L_UT_HMULT_UP_UP, L_UT_HMULT_UP_DN,
+     H       L_UT_HMULT_DN_UP, L_UT_HMULT_DN_DN,
+     E       L_EMULT_UP,       L_EMULT_DN,
+     E       L_UT_EMULT_UP,    L_UT_EMULT_DN,
+     G       L_SGMULT_UP,      L_SGMULT_DN,
+     L       L_HMULT_EXIST
+
+	SAVE   / LINEARIZED_MULTIPLIER_VARIABLES /
+

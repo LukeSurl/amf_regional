@@ -1,0 +1,336 @@
+#this is a python scrpt to convert HDF format satellite data
+#to ASCII-format data which the AMF code can read
+
+
+def padded_string(required_length,value):
+    line_as_string = str(value)
+    length_of_string = len(line_as_string)
+    padding = " "*(required_length - len(line_as_string))
+    output_string = padding + line_as_string
+    return output_string
+
+import h5py
+import os
+import datetime
+import numpy as np
+import sys
+
+
+#Choose the date for which to run (command line arguments)
+year = str(sys.argv[1])
+if sys.argv[2] < 10:
+    month = "0" + str(sys.argv[2])
+else:
+    month = str(sys.argv[2])
+day = int(sys.argv[3])
+
+#year = "2012" #as 4-character text string 
+#month = "04"  #as 2-character text string
+#day = 20 #dayof the year as integer. Only used for OMI
+
+
+if (int(year) % 4 == 0):
+     #is leap year
+     julianstart = {
+     "01":1  ,"02":32 ,"03":61 ,"04":92 ,
+     "05":122,"06":153,"07":183,"08":214,
+     "09":245,"10":275,"11":306,"12":336}
+else :
+     #not leap year
+     julianstart = {
+     "01":1  ,"02":32 ,"03":60 ,"04":91 ,
+     "05":121,"06":152,"07":182,"08":213,
+     "09":244,"10":274,"11":305,"12":335}
+
+juliandaynumber = julianstart[month] + day - 1
+if juliandaynumber < 10 :
+    juliandaystring = "00" + str(juliandaynumber)
+elif juliandaynumber < 100 :
+    juliandaystring = "0"  + str(juliandaynumber)
+else :
+    juliandaystring = str(juliandaynumber)
+
+directory_string = '/group_workspaces/jasmin/geoschem/SatelliteData/OMI_HCHO_NASA/' + year + '/' + juliandaystring + '/'
+print directory_string
+
+output_directory = '/group_workspaces/jasmin/geoschem/local_users/lsurl/OMI_ASCII/CH2O' #subdirectories will be created
+
+
+if not os.path.exists(output_directory + '/' + year):
+    os.makedirs(output_directory + '/' + year)
+
+if not os.path.exists(output_directory + '/' + year + '/' + year + month):
+    os.makedirs(output_directory + '/' + year + '/' + year + month)
+
+for path, subdirs, files in os.walk(directory_string):
+
+    for name in files:
+
+        if name[-3:] == "xml" : #xmls are downloaded but aren't useful. Skip these
+            continue
+        elif name[0] == "." : #files like ".listing"
+            continue
+
+        full_filepath = os.path.join(directory_string, name)
+        print(full_filepath)
+        f = h5py.File(full_filepath,'r')
+
+
+        #OMI_HCHO
+        g = f['HDFEOS']['SWATHS']['OMI Total Column Amount HCHO']
+        #sza
+        this_sza = (np.array(g['Geolocation Fields']['SolarZenithAngle'])).flatten()
+        #sva (viewing zenith angle)
+        this_sva = (np.array(g['Geolocation Fields']['ViewingZenithAngle'])).flatten()
+        #solar_azimuth angle
+        this_azm = (np.array(g['Geolocation Fields']['SolarAzimuthAngle'])).flatten()
+        #lat_centres
+        this_lats = (np.array(g['Geolocation Fields']['Latitude'])).flatten()
+        #lon_centres
+        this_lons = (np.array(g['Geolocation Fields']['Longitude'])).flatten()
+        #cloud fraction
+        this_fcld = (np.array(g['Data Fields']['AMFCloudFraction'])).flatten()
+        #cloud pressure
+        this_pcld = (np.array(g['Data Fields']['AMFCloudPressure'])).flatten()
+        #scd
+        this_scd = (np.array(g['Data Fields']['ColumnAmountDestriped'])).flatten()
+        #dsc
+        this_dsc = (np.array(g['Data Fields']['ColumnUncertainty'])).flatten()
+        #Time.
+        #Time is a little trickier, as we only have one entry per swath.
+        time_perswath = (np.array(g['Geolocation Fields']['Time'])).flatten()
+        #x = len(time_perswath)
+        #this_time = np.array([])
+        #for i in range(0,x-1):
+        #    this_time = np.append(this_time,[time_perswath[i]] * 60)
+
+        #Extra entries for .extra file
+        #average column uncertainty  --- one entry per file
+        this_acu = (np.array(g['Data Fields']['AverageColumnUncertainty'])).flatten()
+        #average fitting RMS  --- one entry per file
+        this_afRMS = (np.array(g['Data Fields']['AverageFittingRMS'])).flatten()
+        #Column amount
+        this_ca = (np.array(g['Data Fields']['ColumnAmount'])).flatten()
+        #Fit convergence flag
+        this_fcf = (np.array(g['Data Fields']['FitConvergenceFlag'])).flatten()
+        #Fitting RMS
+        this_fRMS = (np.array(g['Data Fields']['FitConvergenceFlag'])).flatten()
+        #Main data quality flag
+        this_mdqf = (np.array(g['Data Fields']['MainDataQualityFlag'])).flatten()
+        #Maximum column amount  --- one entry per file
+        this_mca = (np.array(g['Data Fields']['MaximumColumnAmount'])).flatten()
+        #Radiance Reference Column Amount -- 60 entries per file.
+        this_rrca = (np.array(g['Data Fields']['RadianceReferenceColumnAmount'])).flatten()
+        #Radiance reference column uncertainty -- 60 entries per file.
+        this_rrcu = (np.array(g['Data Fields']['RadianceReferenceColumnUncertainty'])).flatten()
+        #Radiance reference column XTR fit  -- 60 entries per file.
+        this_rrcXTRf = (np.array(g['Data Fields']['RadianceReferenceColumnXTRFit'])).flatten()
+        #Radiance reference convergence flag -- 60 entries per file.
+        this_rrcf = (np.array(g['Data Fields']['RadianceReferenceConvergenceFlag'])).flatten()
+        #Radiance reference fitting RMS -- 60 entries per file.
+        this_rrfRMS = (np.array(g['Data Fields']['RadianceReferenceFittingRMS'])).flatten()
+        #Radiance reference latitude range -- four entries per file, but only first 2 are meaningful.
+        this_rrlr_s = (np.array(g['Data Fields']['RadianceReferenceLatitudeRange'][0])).flatten()
+        this_rrlr_n = (np.array(g['Data Fields']['RadianceReferenceLatitudeRange'][1])).flatten()
+        #Radiance WavCal convergence flag-- 60 entries per file.
+        this_rwccf = (np.array(g['Data Fields']['RadianceWavCalConvergenceFlag'])).flatten()
+        #Radiance WavCal latitude range -- four entries per file, but only first 2 are meaningful.
+        this_rwclr_s = (np.array(g['Data Fields']['RadianceWavCalLatitudeRange'][0])).flatten()
+        this_rwclr_n = (np.array(g['Data Fields']['RadianceWavCalLatitudeRange'][1])).flatten()
+        #Solar WavCal Convergence flag-- 60 entries per file.
+        this_swccf = (np.array(g['Data Fields']['SolarWavCalConvergenceFlag'])).flatten()
+        #XtrackQualityFlag
+        this_xtqf = (np.array(g['Geolocation Fields']['XtrackQualityFlags'])).flatten()
+        
+
+        #number of entries
+        num_entries = len(this_sza)
+
+        #define the output file
+        output_name = name[0:-4] + '.txt'
+
+        outfile = open(output_directory + '/' + year + '/' + year + month + '/' + output_name,'w')
+        for line in range(0,num_entries-1):
+            #LINENUMBER
+            #A unique line number
+            outfile.write(padded_string(9,line))
+
+            #PIXEL
+            #NOT used by AMF. We'll fill this with sequential numbers in GOME, 1-60 cycle in OMI
+            outfile.write(padded_string(5,line%60))
+                
+            #SCAN
+            #NOT used by AMF. Will be set to "  0" for GOME, and the line/60 (int) of the pixel number for OMI
+            #if option == 1:
+            outfile.write("  0")
+            #elif option == 2:
+            #    numtowrite = line / 60
+            #    while numtowrite > 999 :
+            #        numtowrite = numtowrite - 1000
+            #
+            #    outfile.write(padded_string(3,line / 60))
+
+            #SZA
+            #read by AMF.
+            if this_sza[line] < 90. :
+                outfile.write(padded_string(8, "%.3f" % this_sza[line]))
+            else : #if sun is below horizon, set this to 89.999degs
+                outfile.write("  89.999")
+
+
+            #SVA
+            #read by AMF.
+            if this_sva[line] < 0.0 :
+                 outfile.write("   0.000")
+            else :
+                outfile.write(padded_string(8, "%.3f" % this_sva[line]))
+
+            #AZM
+            #Not used by AMF. We do get in in OMI anyway tho
+            outfile.write("   0.000")
+
+            #I1, J1, I2, J2, I3, J3, I4, J4
+            #Not used by AMF. Will each be set to "   0.000"
+            outfile.write("   0.000")
+            outfile.write("   0.000")
+            outfile.write("   0.000")
+            outfile.write("   0.000")
+            outfile.write("   0.000")
+            outfile.write("   0.000")
+            outfile.write("   0.000")
+            outfile.write("   0.000")
+            
+            #LAT_centres
+            #used by AMF
+            outfile.write(padded_string(8, "%.3f" % this_lats[line]))
+                         
+            #LON_centres
+            #used by AMF
+            outfile.write(padded_string(8, "%.3f" % this_lons[line]))
+
+            #FCLD
+            #used by AMF
+            outfile.write(padded_string(8, "%.3f" % this_fcld[line]))
+
+            #PCLD
+            #used by AMF, but not in the GOME-2 files.
+            outfile.write(padded_string(9, "%.3f" % this_pcld[line]))
+
+            #TCOT
+            #used by AMF for GOME, but not in the GOME-2 files. Here be set to "    0.000"
+            outfile.write("    0.000") #PLACEHOLDER VALUE
+
+            #SC
+            #used by AMF (after calculation)
+            outfile.write(padded_string(11, "%.3e" % this_scd[line]))
+
+            #DSC
+            #not used by AMF. 
+            outfile.write(padded_string(11, "%.3e" % this_dsc[line]))
+
+            #FITRMS
+            #not used by AMF
+            #Will be set to "  0.000E+00"
+            outfile.write("  0.000E+00")
+
+            #TIME
+            #time in OMI   file is secs since 1993-01-01-00:00:00
+            time_unix = int(time_perswath[line/60] + 725846400)
+
+            #time_as_string = datetime.datetime.fromtimestamp(time_unix).strftime('%m%d%H%M%S')
+            time_as_string = str(time_unix)
+            outfile.write(" "+time_as_string)
+
+            #new line
+            outfile.write("\n")
+            
+        #new file
+        outfile.close()
+        
+        #===Extra output===
+        #define the extra output file
+        output_name = name[0:-4] + '.extra'
+
+        outfile = open(output_directory + '/' + year + '/' + year + month + '/' + output_name,'w')
+
+        for line in range(0,num_entries-1):
+            pixel = line%60
+            
+            #line number
+            outfile.write(padded_string(9,line))
+            outfile.write(" ")
+            #PIXEL
+            #NOT used by AMF. We'll fill this with sequential numbers in GOME, 1-60 cycle in OMI
+            outfile.write(padded_string(5,pixel))
+            outfile.write(" ")    
+            #SCAN
+            #NOT used by AMF. Will be set to "  0" for GOME, and the line/60 (int) of the pixel number for OMI
+            outfile.write(padded_string(6,line / 60))
+            outfile.write(" ")
+            #average column uncertainty  --- one entry per file
+            outfile.write(padded_string(11, "%.3e" % float(this_acu)))
+            outfile.write(" ")
+            #average fitting RMS  --- one entry per file
+            outfile.write(padded_string(11, "%.3e" % float(this_afRMS)))            
+            outfile.write(" ")
+            #Column amount
+            outfile.write(padded_string(11, "%.3e" % this_ca[line]))
+            outfile.write(" ")
+            #Column amount destriped
+            outfile.write(padded_string(11, "%.3e" % this_scd[line]))
+            outfile.write(" ")
+            #Column uncertainty
+            outfile.write(padded_string(11, "%.3e" % this_dsc[line]))            
+            outfile.write(" ")
+            
+            #Fit convergence flag
+            outfile.write(padded_string(11, "%.3e" % this_fcf[line]))
+            outfile.write(" ")
+            #Fitting RMS
+            outfile.write(padded_string(11, "%.3e" % this_fRMS[line]))
+            outfile.write(" ")
+            #Main data quality flag
+            outfile.write(padded_string(11, "%.3e" % this_mdqf[line]))
+            outfile.write(" ")
+            #Maximum column amount  --- one entry per file
+            outfile.write(padded_string(11, "%.3e" % float(this_mca)))
+            outfile.write(" ")
+            #Radiance Reference Column Amount -- 60 entries per file.
+            outfile.write(padded_string(11, "%.3e" % this_rrca[pixel]))            
+            outfile.write(" ")
+            #Radiance reference column uncertainty -- 60 entries per file.
+            outfile.write(padded_string(11, "%.3e" % this_rrcu[pixel]))
+            outfile.write(" ")
+            #Radiance reference column XTR fit  -- 60 entries per file.
+            outfile.write(padded_string(11, "%.3e" % this_rrcXTRf[pixel]))
+            outfile.write(" ")
+            #Radiance reference convergence flag -- 60 entries per file.
+            outfile.write(padded_string(11, "%.3e" % this_rrcf[pixel]))
+            outfile.write(" ")
+            #Radiance reference fitting RMS -- 60 entries per file.
+            outfile.write(padded_string(11, "%.3e" % this_rrfRMS[pixel]))
+            outfile.write(" ")
+            #Radiance reference latitude range -- four entries per file, but only first 2 are meaningful.
+            outfile.write(padded_string(11, "%.3e" % float(this_rrlr_s)))
+            outfile.write(" ")
+            outfile.write(padded_string(11, "%.3e" % float(this_rrlr_n)))
+            outfile.write(" ")
+            #Radiance WavCal convergence flag-- 60 entries per file.
+            outfile.write(padded_string(11, "%.3e" % this_rwccf[pixel]))
+            outfile.write(" ")
+            #Radiance WavCal latitude range -- four entries per file, but only first 2 are meaningful.
+            outfile.write(padded_string(11, "%.3e" % float(this_rwclr_s)))
+            outfile.write(" ")
+            outfile.write(padded_string(11, "%.3e" % float(this_rwclr_n)))
+            outfile.write(" ")
+            #Solar WavCal Convergence flag-- 60 entries per file.
+            outfile.write(padded_string(11, "%.3e" % this_swccf[pixel]))
+            outfile.write(" ")
+            #XtrackQualityFlag
+            outfile.write(padded_string(11, "%.3e" % this_xtqf[pixel]))
+            outfile.write(" ")
+            outfile.write("\n")
+            
+        #new file
+        outfile.close()
+

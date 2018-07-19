@@ -1,0 +1,191 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  This is LIDORT.PARS.
+
+C  File of constants for LIDORT model.
+
+C  Version number
+C  ==============
+
+	CHARACTER*5	 LIDORT_VERSION_NUMBER
+	PARAMETER	 ( LIDORT_VERSION_NUMBER = '2.3  ' )
+
+C  File i/o unit numbers
+C  ======================
+
+	INTEGER		 LIDORT_FUNIT, LIDORT_INUNIT, LIDORT_SCENUNIT
+	INTEGER		 LIDORT_RESUNIT, LIDORT_ERRUNIT, LIDORT_IDLUNIT
+	PARAMETER	 ( LIDORT_INUNIT = 21 )
+	PARAMETER	 ( LIDORT_SCENUNIT = 21 )
+	PARAMETER	 ( LIDORT_FUNIT = 23 )
+	PARAMETER	 ( LIDORT_RESUNIT = 24 )
+	PARAMETER	 ( LIDORT_ERRUNIT = 25 )
+	PARAMETER	 ( LIDORT_IDLUNIT = 26 )
+
+C  Basic dimensions
+C  ================
+
+C  solution arrays
+
+	INTEGER		 MAXSTRM
+	PARAMETER	 ( MAXSTRM = 10 )
+
+	INTEGER		 MAXLAYER
+C	PARAMETER	 ( MAXLAYER = 60 )
+CRVM
+ 	PARAMETER	 ( MAXLAYER = 101 )
+
+	INTEGER		 MAXMOMENT, MAXFOURIER
+	PARAMETER	 ( MAXFOURIER = 20, MAXMOMENT = 40 )
+
+	INTEGER		 MAX_DIRECTIONS
+	PARAMETER	 ( MAX_DIRECTIONS = 2 )
+
+C  user defined variables
+
+	INTEGER		 MAX_USER_STREAMS
+	PARAMETER	 ( MAX_USER_STREAMS = 8 )
+
+	INTEGER		 MAX_USER_RELAZMS
+	PARAMETER	 ( MAX_USER_RELAZMS = 1 )
+
+	INTEGER		 MAX_OFFGRID_USERTAUS
+	PARAMETER	 ( MAX_OFFGRID_USERTAUS = 2 )
+
+	INTEGER		 MAX_OUT_USERTAUS
+	PARAMETER	 ( MAX_OUT_USERTAUS = 2 )
+
+C  Derived dimensions
+C  ==================
+
+	INTEGER		 MAXSTRM2
+	PARAMETER	 ( MAXSTRM2 = 2*MAXSTRM )
+
+	INTEGER		 MAXTOTAL, MAXBANDTOTAL
+	PARAMETER	 ( MAXTOTAL = MAXLAYER*MAXSTRM2 )
+	PARAMETER	 ( MAXBANDTOTAL = 9*MAXSTRM - 2 )
+
+	INTEGER		 MAX_OUT_STREAMS
+	PARAMETER	 ( MAX_OUT_STREAMS = MAX_USER_STREAMS+MAXSTRM )
+
+C  Format constants
+C  ================
+
+        CHARACTER *(*)  FMT_HEADING
+        PARAMETER       ( FMT_HEADING =
+     $                          '( / T6, ''-----> '', A, /)' )
+
+        CHARACTER *(*)  FMT_INTEGER
+        PARAMETER       ( FMT_INTEGER = '(T6, A, T58, I10)' )
+
+        CHARACTER *(*)  FMT_REAL
+        PARAMETER       ( FMT_REAL = '(T6, A, T58, 1PG14.6)' )
+
+        CHARACTER *(*)  FMT_CHAR
+        PARAMETER       ( FMT_CHAR = '(T6, A, T48, A20)' )
+
+        CHARACTER *(*)  FMT_SECTION
+        PARAMETER       ( FMT_SECTION =
+     $                          '( / T6, ''****** '', A, /)' )
+C     $                  '( // T6 
+C     $                  ''----------------------------------------'', 
+C     $                  ''-----------------------------------'', 
+C     $                      / T6 A, 
+C     $                      / T6  
+C     $                  ''----------------------------------------'', 
+C     $                  ''-----------------------------------'', 
+C     $                          / )' )
+
+C  numbers
+C  =======
+
+	DOUBLE PRECISION FOUR,THREE,TWO,ONEP5,ONE,ZERO
+	DOUBLE PRECISION MINUS_ONE,MINUS_TWO
+	DOUBLE PRECISION HALF,QUARTER,DEG_TO_RAD,PIE,PI4,PI2
+	DOUBLE PRECISION EPS3, EPS4, EPS5
+	DOUBLE PRECISION SMALLNUM
+
+	PARAMETER	 ( ONE = 1.0D0, ZERO = 0.0D0,  ONEP5 = 1.5D0 )
+	PARAMETER	 ( TWO = 2.0D0, THREE = 3.0D0, FOUR = 4.0D0 )
+	PARAMETER	 ( QUARTER = 0.25D0, HALF = 0.5D0 )
+	PARAMETER	 ( MINUS_ONE = -ONE )
+	PARAMETER	 ( MINUS_TWO = -TWO )
+	PARAMETER	 ( DEG_TO_RAD = 1.7453292519943D-02 )
+	PARAMETER	 ( PIE = 180.0D0*DEG_TO_RAD )
+	PARAMETER	 ( PI2 = 2.0D0 * PIE )
+	PARAMETER	 ( PI4 = 4.0D0 * PIE )
+	PARAMETER	 ( EPS3 = 0.001D0 )
+	PARAMETER	 ( EPS4 = 0.0001D0 )
+	PARAMETER	 ( EPS5 = 0.00001D0 )
+	PARAMETER	 ( SMALLNUM = 1.0D-15 )
+
+C  Control for Using L'Hopital's Rule
+
+	DOUBLE PRECISION HOPITAL_TOLERANCE
+	PARAMETER	 ( HOPITAL_TOLERANCE = EPS5 )
+
+C  Control for limits of single scatter albedo
+
+	DOUBLE PRECISION OMEGA_SMALLNUM
+	PARAMETER	 ( OMEGA_SMALLNUM = 1.0D-06 )
+
+C   ############### NEW CODE ##############################################
+
+C  Control for limits of extinction optical depth along solar path
+
+	DOUBLE PRECISION MAX_TAU_SPATH
+	PARAMETER	 ( MAX_TAU_SPATH = 32.0D0 )
+
+C  Control for limits of extinction optical depth along USER paths
+
+	DOUBLE PRECISION MAX_TAU_UPATH
+	PARAMETER	 ( MAX_TAU_UPATH = 32.0D0 )
+
+C  Control for limits of extinction optical depth along QUADRATURE paths
+
+	DOUBLE PRECISION MAX_TAU_QPATH
+	PARAMETER	 ( MAX_TAU_QPATH = 32.0D0 )
+
+C   ############### NEW CODE ##############################################
+
+C  error indices
+C  =============
+
+	INTEGER		 LIDORT_SERIOUS
+	PARAMETER	 ( LIDORT_SERIOUS  = 1 )
+
+	INTEGER		 LIDORT_SUCCESS
+	PARAMETER	 ( LIDORT_SUCCESS  = 0 )
+
+C  directional indices
+
+	INTEGER		 UPIDX
+	PARAMETER	 ( UPIDX  = 1 )
+
+	INTEGER		 DNIDX
+	PARAMETER	 ( DNIDX  = 2 )
+
+C  End of file.

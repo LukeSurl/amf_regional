@@ -1,0 +1,77 @@
+C********************************************************************C
+C
+C	GOMETRAN++ - Version 2.1 - Last modification: 3 Apr 1996
+C
+C	Copyright (C) 1995-1996, Institute of Remote Sensing,
+C			         University of Bremen, Germany
+C
+C********************************************************************C
+C  GAERLIB.PARS: parameters for lowtran aerosol library
+
+C  1. Aerosol loading, extracted from Lowtran
+C  ------------------------------------------
+
+C  Number of height levels for tabulated data in each aerosol region,
+C  and for the atmosphere as a whole:
+
+        INTEGER         N_BOUND_LYRS
+        PARAMETER       ( N_BOUND_LYRS = 3 )
+
+        INTEGER         N_TROP_LYRS
+        PARAMETER       ( N_TROP_LYRS = 8 )
+
+        INTEGER         N_STRAT_LYRS
+        PARAMETER       ( N_STRAT_LYRS = 16 )
+
+        INTEGER         N_MES_LYRS
+        PARAMETER       ( N_MES_LYRS = 7 )
+
+        INTEGER         NZ_AER_PRF
+        PARAMETER       ( NZ_AER_PRF = N_BOUND_LYRS + N_TROP_LYRS 
+     $                               + N_STRAT_LYRS + N_MES_LYRS )
+
+C  Number of visibility levels in boundary layer and in troposphere
+C  for which loading data is tabulated:
+
+        INTEGER         N_AER_VIS_BL
+        PARAMETER       ( N_AER_VIS_BL = 5 )
+
+        INTEGER         N_AER_VIS_TR
+        PARAMETER       ( N_AER_VIS_TR = 2 )
+
+C  Number of seasons for which data is tabulated:
+
+        INTEGER         N_AER_SEASON
+        PARAMETER       ( N_AER_SEASON = 2 )
+
+C  Number of different aerosol loadings
+
+        INTEGER         N_STR_LOAD
+        PARAMETER       (N_STR_LOAD = 4)
+
+        INTEGER         N_MES_LOAD
+        PARAMETER       (N_MES_LOAD = 2 )
+
+C  2. Aerosol coefficients, extracted from Lowtran
+C  -----------------------------------------------
+
+C  Number of Aerosol wavelengths for coefficient database:
+
+        INTEGER         N_AER_WAVS
+        PARAMETER       ( N_AER_WAVS = 6 )
+
+C  Number of relative humidity regimes for coefficient database:
+
+        INTEGER         N_AER_HUMS
+        PARAMETER       ( N_AER_HUMS = 4 )
+
+C  Number of different aerosol types:
+
+        INTEGER         N_BL_TYPE
+        PARAMETER       ( N_BL_TYPE = 4 )
+
+        INTEGER         N_STR_TYPE
+        PARAMETER       ( N_STR_TYPE = 3 )
+
+
+C  End of GAERLIB.PARS.

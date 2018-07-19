@@ -1,0 +1,179 @@
+C********************************************************************C
+C
+C	GOMETRAN++ - Version 2.1 - Last modification: 3 Apr 1996
+C
+C	Copyright (C) 1995-1996, Institute of Remote Sensing,
+C			         University of Bremen, Germany
+C
+C********************************************************************C
+C                            GOMETRAN.PARS
+
+C  Parameter file for GOMETRAN radiative transfer model
+C  Suitable for GP and GPP versions
+
+C  1.  Dimensioning
+C      ============
+
+C  Several parameters relating to dimension sizes MUST be set equal to
+C  their equivalents outside the GOMETRAN module.  These parameters are :
+
+C  Maximum number of layers in local profile arrays 
+
+	INTEGER		MAX_GT_LAYERS
+	PARAMETER       ( MAX_GT_LAYERS = 71 )
+
+C  Maximum number of height grid files 
+
+	INTEGER		MAX_GT_NETFILES
+	PARAMETER       ( MAX_GT_NETFILES = 4 )
+
+C  Maximum number of wavelengths in aerosol data input arrays
+
+	INTEGER		MAX_GT_AERWAVS
+	PARAMETER       ( MAX_GT_AERWAVS = 6 )
+
+C  Maximum number of wavelengths in cloud data input arrays
+
+	INTEGER		MAX_GT_CLDWAVS
+	PARAMETER       ( MAX_GT_CLDWAVS = 2 )
+
+C  Maximum number of wavelengths in ALBEDO surface data input arrays
+
+	INTEGER		MAX_GT_ALBWAVS
+	PARAMETER       ( MAX_GT_ALBWAVS = 2 )
+
+C  Maximum number of wavelengths in BI-DIRECTIONAL surface data input arrays
+
+	INTEGER		MAX_GT_BDRWAVS
+	PARAMETER       ( MAX_GT_BDRWAVS = 1 )
+
+C  Maximum number of zeniths in BI-DIRECTIONAL surface data input arrays
+
+	INTEGER		MAX_GT_BDRZENS
+	PARAMETER       ( MAX_GT_BDRZENS = 9 )
+
+C  Maximum number of particle weighting functions
+
+	INTEGER		MAX_GT_PTWFS
+	PARAMETER	( MAX_GT_PTWFS = 7 )
+
+C  Maximum number of spectral segments
+
+	INTEGER         MAX_GT_SEGMENTS
+	PARAMETER       ( MAX_GT_SEGMENTS = 20 )
+
+C  Maximum number of spectral points
+
+	INTEGER         MAX_GT_SPECPTS
+	PARAMETER       ( MAX_GT_SPECPTS = 3 )
+
+C  Maximum number of ESFT weights
+
+	INTEGER		MAX_GT_O2WEIGHT
+	PARAMETER	( MAX_GT_O2WEIGHT = 10 )
+
+C  Maximum number of actual coefficients used in O2 band ESFT
+
+	INTEGER		MAX_GT_O2COEFF
+	PARAMETER	( MAX_GT_O2COEFF = 200 )
+
+c  Maximum number of temperatures for absorption cross section spectra
+
+	integer         max_gt_nxtemp
+	parameter       ( max_gt_nxtemp = 5 )
+
+C  NOTE : All molecular/coefficient dimensioning in GT_SPECIES.PARS
+
+C  2.  Other parameters
+C      ================
+
+C  Numbers
+
+	DOUBLE PRECISION    GT_ZERO, GT_HALF, GT_ONE
+	DOUBLE PRECISION    GT_TWO, GT_ONEP5
+	DOUBLE PRECISION    GT_BIGNUM, GT_RAD_TO_DEG, GT_FOURPIE
+	DOUBLE PRECISION    GT_PIE
+	PARAMETER       ( GT_ZERO = 0.0D0, GT_HALF = 0.5D0 )
+	PARAMETER	( GT_ONE = 1.0D0, GT_ONEP5 = 1.5D0 )
+	PARAMETER	( GT_TWO = 2.0D0 )
+	PARAMETER	( GT_BIGNUM = 1.0D+35 )
+	PARAMETER	( GT_RAD_TO_DEG = 57.29578D0 )
+	PARAMETER	( GT_FOURPIE = 12.5663708D0 )
+	PARAMETER       ( GT_PIE =  3.1415926536D0 )
+
+C  Help parameters
+
+	DOUBLE PRECISION	GT_ANA, GT_ANC
+	PARAMETER	      ( GT_ANA = GT_ONE, GT_ANC = GT_ONE )
+
+C  Minimum accuracy parameter
+
+	DOUBLE PRECISION  GT_MINIMUM_ACCUR
+	PARAMETER         ( GT_MINIMUM_ACCUR = 0.01D0 )
+
+C  Maximum number of Legendre polynomials
+
+	INTEGER		MAX_GT_LEGEN
+	PARAMETER	( MAX_GT_LEGEN = 21 )
+
+C  Maximum number of streams
+
+	INTEGER		MAX_GT_STRMS
+	PARAMETER       ( MAX_GT_STRMS = 14 )
+
+C  Maximum number of DUMMY streams (output line-of-sight angles)
+
+	INTEGER		MAX_GT_DUMSTRMS
+	PARAMETER       ( MAX_GT_DUMSTRMS = 5 )
+
+C  Maximum number of azimuthal harmonics
+
+	INTEGER		MAX_GT_HARMS
+	PARAMETER	( MAX_GT_HARMS = 20 )
+
+	INTEGER		MAX_GT_HARMS1
+	PARAMETER	( MAX_GT_HARMS1 = MAX_GT_HARMS + 1 )
+
+C  Number of terms in the Legendre expansion of Rayleigh phase function
+
+	INTEGER			GT_NRAY3
+	PARAMETER		( GT_NRAY3 = 3 )
+
+C  Parameter for logical dimensions of finite difference matrices.
+C  This has to re-set according to the number of computational layers
+C  NLAYERS, and the number of computational streams NSTRMS - this is
+C  necessary to avoid excessive demands on storage and the dreaded
+C  " exceeded page file quota" !!
+C
+	INTEGER		MAX_GT_MATRX
+	PARAMETER       ( MAX_GT_MATRX = 1000 )
+
+
+C  Fixed wavelengths for aerosol parameterisation scheme
+
+        DOUBLE PRECISION  GT_LAMBDA1, GT_LAMBDA2, GT_LAMBDA3
+        PARAMETER        (GT_LAMBDA1 = 200.D0)
+        PARAMETER        (GT_LAMBDA2 = 337.1D0)
+        PARAMETER        (GT_LAMBDA3 = 550.D0)
+
+C  Maximum number of aerosol parameterisation quantities
+
+	INTEGER		MAX_GT_AERPARA
+	PARAMETER	( MAX_GT_AERPARA = 6 )
+
+C  VERSION 1.1:
+c  ------------
+
+c  New band matrix inversion scheme: first dimension of matrix matteb
+        integer            GT_ldmatteb
+        parameter          (GT_ldmatteb = 5*max_gt_strms-1)
+
+C  End of GOMETRAN.PARS
+
+
+
+
+
+
+
+

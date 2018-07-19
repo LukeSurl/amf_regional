@@ -1,0 +1,114 @@
+C ###############################################################
+C #							    	#
+C #                    THE LIDORT  MODEL			#
+C #							        #
+C #      (LInearized Discrete Ordinate Radiative Transfer)      #
+C #	  --	     -	      -        - 	 -	        #
+C #		  					        #
+C ###############################################################
+
+C ###############################################################
+C #		  					        #
+C #  Author :	Robert. J. D. Spurr			        #
+C #		  					        #
+C #  Address :	Harvard-Smithsonian Center for Astrophysics     #
+C #		60 Garden Street			        #
+C #	 	Cambridge, MA 02138, USA			#
+C #		Tel: (617) 496 7819				#
+C #		  					        #
+C #  Email :      rspurr@cfa.harvard.edu			#
+C #		  					        #
+C #  Version :	  2.3					        #
+C #  Release Date   January 2001				#
+C #		  					        #
+C ###############################################################
+
+C  multiplier arrays
+C  -----------------
+
+C  Global multipliers
+C  ==================
+
+C  Integrated homogeneous solution multipliers (global, whole layer)
+
+	DOUBLE PRECISION 
+     &      HMULT_1(MAXSTRM,MAX_USER_STREAMS,MAXLAYER),
+     &      HMULT_2(MAXSTRM,MAX_USER_STREAMS,MAXLAYER)
+
+	DOUBLE PRECISION 
+     & UT_HMULT_UP_UP(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS),
+     & UT_HMULT_UP_DN(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS),
+     & UT_HMULT_DN_UP(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS),
+     & UT_HMULT_DN_DN(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS)
+
+	LOGICAL		HMULT_EXIST(MAXLAYER)
+	
+C  forcing term multipliers (saved for whole atmosphere)
+
+	DOUBLE PRECISION 
+     &    EMULT_UP(MAX_USER_STREAMS,MAXLAYER),
+     &    EMULT_DN(MAX_USER_STREAMS,MAXLAYER),
+     &    UT_EMULT_UP(MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS),
+     &    UT_EMULT_DN(MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS)
+
+	LOGICAL	EMULT_HOPRULE(MAXLAYER,MAX_USER_STREAMS)
+
+C  Green functions multipliers for off-grid optical depths
+
+	DOUBLE PRECISION UT_GMULT_UP(MAXSTRM,MAX_OFFGRID_USERTAUS)
+	DOUBLE PRECISION UT_GMULT_DN(MAXSTRM,MAX_OFFGRID_USERTAUS)
+
+C  Source function integrated Green function multipliers (whole layer)
+
+	DOUBLE PRECISION 
+     & SGMULT_UP_UP(MAXSTRM,MAX_USER_STREAMS,MAXLAYER),
+     & SGMULT_UP_DN(MAXSTRM,MAX_USER_STREAMS,MAXLAYER),
+     & SGMULT_DN_UP(MAXSTRM,MAX_USER_STREAMS,MAXLAYER),
+     & SGMULT_DN_DN(MAXSTRM,MAX_USER_STREAMS,MAXLAYER)
+
+C  Source function integrated Green function multipliers (partial layer)
+
+	DOUBLE PRECISION 
+     & UT_SGMULT_UP_UP(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS),
+     & UT_SGMULT_UP_DN(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS),
+     & UT_SGMULT_DN_UP(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS),
+     & UT_SGMULT_DN_DN(MAXSTRM,MAX_USER_STREAMS,MAX_OFFGRID_USERTAUS)
+
+C  Holding arrays for Multiplier coefficients
+C  ------------------------------------------
+
+	DOUBLE PRECISION GAMMA_M(MAXSTRM,MAXLAYER)
+	DOUBLE PRECISION GAMMA_P(MAXSTRM,MAXLAYER)
+
+C  coefficient functions for user-defined angles
+
+	DOUBLE PRECISION 
+     &      SIGMA_M(MAXLAYER,MAX_USER_STREAMS),
+     &      SIGMA_P(MAXLAYER,MAX_USER_STREAMS),
+     &      ZETA_M(MAXSTRM,MAX_USER_STREAMS,MAXLAYER),
+     &      ZETA_P(MAXSTRM,MAX_USER_STREAMS,MAXLAYER)
+
+C  Commons
+C  -------
+
+	COMMON / SOURCEFUNC_MULTIPLIERS /
+     E       EMULT_UP,    EMULT_DN,
+     E    UT_EMULT_UP, UT_EMULT_DN,
+     W       HMULT_1,        HMULT_2,
+     H    UT_HMULT_UP_UP, UT_HMULT_UP_DN,
+     H    UT_HMULT_DN_UP, UT_HMULT_DN_DN,
+     G       SGMULT_UP_UP,      SGMULT_UP_DN,
+     G       SGMULT_DN_UP,      SGMULT_DN_DN,
+     G    UT_SGMULT_UP_UP,   UT_SGMULT_UP_DN,
+     G    UT_SGMULT_DN_UP,   UT_SGMULT_DN_DN,
+     Q    UT_GMULT_UP, UT_GMULT_DN,
+     L    HMULT_EXIST, EMULT_HOPRULE
+
+	COMMON / BASIC_MULTIPLIER_COEFFICIENTS /
+     &       GAMMA_M, GAMMA_P, 
+     &       SIGMA_M, SIGMA_P,
+     &       ZETA_M, ZETA_P
+
+	SAVE   / SOURCEFUNC_MULTIPLIERS /
+	SAVE   / BASIC_MULTIPLIER_COEFFICIENTS /
+

@@ -1,0 +1,18 @@
+#!/usr/bin/perl -w
+
+# Perl script to compile AMF code (dbm; 03/10/06)
+
+# Source variables for IFORT compiler
+#source /usr/local/bin/ifortvars.csh
+
+# Start fresh
+qx( gmake clean );
+
+# remove old files
+qx( rm compile_amf.log );
+qx( rm compile_amf.o* );
+
+# Compile
+qx( gmake -f Makefile >> compile_amf.log );
+
+exit(0);
